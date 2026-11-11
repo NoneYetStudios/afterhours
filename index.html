@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0e17">
+  <meta name="description" content="After Hours - survive the night shift at STF Corporate Headquarters. An STF Arcade game.">
+  <title>After Hours — STF Arcade</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <header id="hud">
+    <a id="backBtn" class="btn-back" href="https://arcade.stabthefinger.com">← STF Arcade</a>
+    <div id="stats">
+      <div class="stat"><span class="lbl">SCORE</span><span class="val" id="hudScore">0</span></div>
+      <div class="stat"><span class="lbl">HIGH</span><span class="val" id="hudHi">0</span></div>
+      <div class="stat"><span class="lbl">TIME</span><span class="val" id="hudTime">00:00</span></div>
+      <div class="stat ammo" id="hudAmmoBox"><span class="lbl">STAPLES</span><span class="val" id="hudAmmo">0</span></div>
+      <div class="stat"><span class="lbl">ENEMIES</span><span class="val" id="hudEnemies">0</span></div>
+      <div class="stat hp"><span class="lbl">HEALTH</span><span class="bar"><span id="hudHpFill"></span></span></div>
+    </div>
+    <div id="toggles">
+      <button id="btnSound" class="chip" type="button" title="Toggle sound (M)">SND</button>
+      <button id="btnVoice" class="chip" type="button" title="Toggle voice (V)">VOX</button>
+      <button id="btnPause" class="chip" type="button" title="Pause (P / Esc)">❚❚</button>
+    </div>
+  </header>
+
+  <main id="stage">
+    <canvas id="game" width="1024" height="736"></canvas>
+
+    <div id="announce"><div id="announceText"></div><div id="announceSub"></div></div>
+    <div id="caption"></div>
+
+    <div id="touch">
+      <div id="stickZone"></div>
+      <div id="stickBase"><div id="stickKnob"></div></div>
+      <div id="fireBtn"><span>STAPLE</span></div>
+    </div>
+
+    <div id="screens">
+
+      <section class="screen active" id="screen-menu">
+        <div class="panel">
+          <div class="brand">STF CORPORATE HEADQUARTERS</div>
+          <h1 class="title">AFTER<br>HOURS</h1>
+          <div class="subtitle" id="menuSubtitle">MANDATORY OVERTIME</div>
+          <div class="tip-card attract" id="menuTipCard">
+            <span class="tip-tag">CORPORATE TIP</span>
+            <p class="tip-text" id="menuTipText"></p>
+          </div>
+          <div class="menu-btns">
+            <button class="btn primary" id="btnPlay" type="button">▶ CLOCK IN</button>
+            <button class="btn" id="btnHow" type="button">HOW TO PLAY</button>
+            <button class="btn" id="btnBoard" type="button">LEADERBOARD</button>
+          </div>
+          <div class="hi-line">YOUR BEST: <b id="menuHi">0</b></div>
+          <p class="hint rotate-hint">Tip: rotate your phone sideways for a bigger map.</p>
+          <p class="foot">An STF Arcade release</p>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-how">
+        <div class="panel wide">
+          <h2>EMPLOYEE HANDBOOK</h2>
+          <div class="how-grid">
+            <div>
+              <h3>Controls</h3>
+              <ul>
+                <li><b>Desktop:</b> <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move · mouse aims · hold <b>left-click</b> to staple</li>
+                <li><b>Mobile:</b> drag anywhere on the left side to move · hold <b>STAPLE</b> to fire (auto-aims at the nearest enemy, or drag the button to aim)</li>
+                <li><kbd>P</kbd> / <kbd>Esc</kbd> pause · <kbd>M</kbd> sound · <kbd>V</kbd> voice</li>
+              </ul>
+              <h3>Survive</h3>
+              <ul>
+                <li>You keep the stapler. You do <b>not</b> keep the staples.</li>
+                <li>Grab glowing <b class="y">STAPLE REFILLS</b>. They appear all over the floor, sometimes somewhere unwise, and they expire.</li>
+                <li>Score comes from survival time, eliminations and pickups.</li>
+                <li>There is no final level. Overtime is forever.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Hostile Assets</h3>
+              <div class="legend"><canvas class="ico" id="icoBot" width="48" height="48"></canvas><div><b>Compliance Bot</b><br>Slow, relentless. Takes several staples.</div></div>
+              <div class="legend"><canvas class="ico" id="icoDrone" width="48" height="48"></canvas><div><b>Security Drone</b><br>Fast. Charges up, then fires. Don't stand still.</div></div>
+              <h3>Pickups</h3>
+              <div class="legend"><canvas class="ico" id="icoStaple" width="48" height="48"></canvas><div><b>Staple Refill</b><br>+18 staples.</div></div>
+              <div class="legend"><canvas class="ico" id="icoCoffee" width="48" height="48"></canvas><div><b>Coffee</b><br>Speed boost and bonus points.</div></div>
+              <div class="legend"><canvas class="ico" id="icoDonut" width="48" height="48"></canvas><div><b>Donut</b><br>Restores health.</div></div>
+            </div>
+          </div>
+          <div class="menu-btns row">
+            <button class="btn primary" id="btnHowPlay" type="button">▶ CLOCK IN</button>
+            <button class="btn" id="btnHowBack" type="button">BACK</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-board">
+        <div class="panel wide">
+          <h2 id="boardTitle">TOP 25 EMPLOYEES OF THE MONTH</h2>
+          <div id="boardModeNotice" class="board-mode-notice"></div>
+          <div class="tip-card attract" id="boardTipCard">
+            <span class="tip-tag">CORPORATE TIP</span>
+            <p class="tip-text" id="boardTipText"></p>
+          </div>
+          <div class="table-wrap">
+            <table id="boardTable">
+              <thead><tr><th>#</th><th>NAME</th><th>SCORE</th><th>TIME</th><th class="hide-sm">DATE</th></tr></thead>
+              <tbody id="boardBody"></tbody>
+            </table>
+            <div id="boardMsg" class="board-msg">Loading…</div>
+          </div>
+          <div class="menu-btns row">
+            <button class="btn primary" id="btnBoardPlay" type="button">▶ CLOCK IN</button>
+            <button class="btn" id="btnBoardRefresh" type="button">REFRESH</button>
+            <button class="btn" id="btnBoardBack" type="button">BACK</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-pause">
+        <div class="panel">
+          <h2>BREAK TIME</h2>
+          <p class="tag">Management has paused your shift. Briefly.</p>
+          <div class="menu-btns">
+            <button class="btn primary" id="btnResume" type="button">RESUME</button>
+            <button class="btn" id="btnQuit" type="button">QUIT TO MENU</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-over">
+        <div class="panel">
+          <h2 class="red">SHIFT TERMINATED</h2>
+          <div class="newhigh" id="newHigh">★ NEW PERSONAL BEST ★</div>
+          <div class="results">
+            <div><span class="lbl">SCORE</span><b id="goScore">0</b></div>
+            <div><span class="lbl">SURVIVED</span><b id="goTime">00:00</b></div>
+            <div><span class="lbl">ELIMINATIONS</span><b id="goKills">0</b></div>
+          </div>
+          <div class="tip-card attract" id="overTipCard">
+            <span class="tip-tag">CORPORATE TIP</span>
+            <p class="tip-text" id="overTipText"></p>
+          </div>
+          <form id="submitForm" autocomplete="off">
+            <label for="nameInput" class="lbl">ENTER YOUR NAME FOR THE GLOBAL LEADERBOARD</label>
+            <div class="name-badge-wrapper">
+              <div class="badge-panel">
+                <div class="badge-caption" id="badgeCaption">HELLO, MY NAME IS:</div>
+                <input id="nameInput" type="text" maxlength="12" placeholder="EMPLOYEE" spellcheck="false" autocapitalize="characters">
+              </div>
+              <button class="btn primary" id="btnSubmit" type="submit">SUBMIT</button>
+            </div>
+            <div id="submitMsg" class="submit-msg"></div>
+          </form>
+          <div class="menu-btns row">
+            <button class="btn primary" id="btnAgain" type="button">▶ OVERTIME AGAIN</button>
+            <button class="btn" id="btnOverBoard" type="button">LEADERBOARD</button>
+            <button class="btn" id="btnOverMenu" type="button">MENU</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/lore.js"></script>
+<script src="js/map.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/input.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

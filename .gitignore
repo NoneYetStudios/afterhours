@@ -1,0 +1,24 @@
+# SQLite database files (created dynamically at runtime)
+data/*.sqlite
+data/*.sqlite-journal
+data/*.sqlite-wal
+data/*.sqlite-shm
+data/*.db
+data/*.log
+
+# Operating system artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Local temp & logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
