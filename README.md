@@ -124,3 +124,9 @@ AH.CONFIG = {
   - SHA-256 IP rate limiting (minimum 3 seconds between submissions).
   - Case-insensitive duplicate handling (one entry per employee, keeping their highest score).
   - Keeps database size bounded to top 500 records.
+
+---
+
+## License
+
+MIT License © 2026 Anthony Moore / None Yet Studios
