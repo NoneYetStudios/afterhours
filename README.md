@@ -4,6 +4,8 @@ A polished retro-modern office maze survival arcade game inspired by classic 198
 
 Zero build steps. Zero npm/Node dependencies. Pure HTML5 Canvas, Web Audio API, and native CSS on the client, with a lightweight PHP + SQLite backend for the global leaderboard (and an automatic browser Local Development Mode fallback).
 
+Built with **Google Antigravity** · Play it live: [afterhours.stabthefinger.com](https://afterhours.stabthefinger.com) · Part of the [STF Arcade](https://stabthefinger.com/stfarcade.html)
+
 ---
 
 ## 🎮 How to Run Locally
